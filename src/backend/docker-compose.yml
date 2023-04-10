@@ -1,0 +1,385 @@
+version: '4.17.1'
+
+volumes:
+  rabbitmq_data:
+  pgdata:
+  kongadata:
+  user_data:
+  av_data:
+  pv_data:
+
+
+networks:
+  dino-net:
+    driver: bridge
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    # platform: 'linux/x86_64'
+    container_name: rabbitmq
+    restart: always
+    networks:
+      - dino-net
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  userdb: 
+    image: mysql
+    container_name: userdb
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: user
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    networks:
+      - dino-net
+    ports:
+      - "6033:3306"
+    volumes:
+      - user_data:/var/lib/mysql
+
+  user:
+    build:
+      context: ./
+      dockerfile: user.Dockerfile
+    image: geraldding/user:dino
+    restart: always
+    networks:
+      - dino-net
+    container_name: user
+    environment:
+      DB_HOST: userdb
+      DB_PORT: 3306
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: user
+      PYTHONUNBUFFERED: 1
+    volumes:
+      - user_data:/var/lib/mysql
+    ports:
+      - "5003:5003"
+    depends_on:
+      - userdb
+
+  points_accumulation:
+    build:
+      context: ./
+      dockerfile: points_accumulation.Dockerfile
+    image: geraldding/points_accumulation:dino
+    restart: always
+    networks:
+      - dino-net
+    depends_on:
+      - rabbitmq
+      - user
+      - error
+    container_name: points_accumulation
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      user_URL: http://user:5003/user
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "6003:6003"
+
+  buyvoucher:
+    build:
+      context: ./
+      dockerfile: buyvoucher.Dockerfile
+    image: geraldding/buyvoucher:dino
+    restart: always
+    networks:
+      - dino-net
+    depends_on:
+      - rabbitmq
+      - user
+      - error
+      - purchasedvoucher
+    container_name: buyvoucher
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      user_URL: http://user:5003/user
+      voucher_URL: http://purchasedvoucher:5002/voucher
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "6002:6002"
+  
+  availablevoucher:
+    build:
+      context: ./
+      dockerfile: availablevoucher.Dockerfile
+    image: geraldding/availablevoucher:dino
+    restart: always
+    networks:
+      - dino-net
+    container_name: availablevoucher
+    environment:
+      DB_HOST: avdb
+      DB_PORT: 3306
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: availablevoucher
+      PYTHONUNBUFFERED: 1
+    volumes:
+      - av_data:/var/lib/mysql
+    ports:
+      - "5001:5001"
+    depends_on:
+      - avdb
+
+  avdb: 
+    image: mysql
+    container_name: avdb
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: availablevoucher
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    networks:
+      - dino-net
+    ports:
+      - "6034:3306"
+    volumes:
+      - av_data:/var/lib/mysql
+
+  redeemvoucher:
+    build:
+      context: ./
+      dockerfile: redeemvoucher.Dockerfile
+    image: geraldding/redeemvoucher:dino
+    restart: always
+    networks:
+      - dino-net
+    depends_on:
+      - rabbitmq
+      - purchasedvoucher
+    container_name: redeemvoucher
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      voucher_URL: http://purchasedvoucher:5002/voucher
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5010:5010"
+    
+  
+  graphqlserver:
+    build:
+      context: ./
+      dockerfile: graphqlserver.Dockerfile
+    image: geraldding/graphqlserver:dino
+    restart: always
+    networks:
+      - dino-net
+    container_name: graphqlserver
+    environment:
+      graphqlserver_url: http://graphqlserver:5030/graphql
+    ports:
+      - "5030:5030"
+  
+  purchasedvoucher:
+    build:
+      context: ./
+      dockerfile: purchasedvoucher.Dockerfile
+    image: geraldding/purchasedvoucher:dino
+    restart: always
+    networks:
+      - dino-net
+    container_name: purchasedvoucher
+    environment:
+      DB_HOST: pvdb
+      DB_PORT: 3306
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: purchasedvoucher
+      PYTHONUNBUFFERED: 1
+    volumes:
+      - pv_data:/var/lib/mysql
+    ports:
+      - "5002:5002"
+    depends_on:
+      - pvdb
+  pvdb: 
+    image: mysql
+    container_name: pvdb
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: purchasedvoucher
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    networks:
+      - dino-net
+    ports:
+      - "6035:3306"
+    volumes:
+      - pv_data:/var/lib/mysql
+
+  error:
+    build:
+      context: ./
+      dockerfile: error.Dockerfile
+    image: geraldding/error:dino
+    restart: always
+    networks:
+      - dino-net
+    depends_on:
+      - rabbitmq
+    container_name: error
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+
+# Changes made
+  email_test:
+    build:
+      context: ./
+      dockerfile: email_test.Dockerfile
+    image: geraldding/email_test:dino
+    restart: always
+    networks:
+      - dino-net
+    depends_on:
+      - rabbitmq
+    container_name: email_test
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+
+  validatevoucher:
+    build:
+      context: ./
+      dockerfile: validatevoucher.Dockerfile
+    image: geraldding/validatevoucher:dino
+    restart: always
+    networks:
+      - dino-net
+    depends_on:
+      - user
+      - availablevoucher
+    container_name: validatevoucher
+    environment:
+      user_URL: http://user:5003/user
+      voucher_URL: http://availablevoucher:5001/availablevoucher
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "6001:6001"
+
+  # kongnodb:
+  #   build:
+  #     context: ./kong/declarative
+  #     dockerfile: kong.Dockerfile
+  #   image: geraldding/kong:kongnodb
+  #   # platform: 'linux/x86_64'
+  #   restart: always
+  #   networks:
+  #     - dino-net
+  #   environment:
+  #     KONG_DATABASE: "off"
+  #     KONG_DECLARATIVE_CONFIG: kong.yml
+  #     KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+  #     KONG_PROXY_LISTEN: 0.0.0.0:8000, 0.0.0.0:8443 ssl, 0.0.0.0:9080 http2, 0.0.0.0:9081 http2 ssl
+  #   healthcheck:
+  #     test: [ "CMD", "curl", "-f", "http://kong:8000" ]
+  #     interval: 5s
+  #     timeout: 10s
+  #     retries: 15
+  #   ports:
+  #     - "8001:8001"
+  #     - "8444:8444"
+  #     - "8000:8000"
+  #     - "8443:8443"
+  #     - "9080:9080"
+  #     - "9081:9081"
+    #######################################
+  # Postgres: The database used by Kong
+  #######################################
+  kong-database:
+    image: postgres:9.6
+    # platform: 'linux/arm64/v8'
+    restart: always
+    networks:
+      - dino-net
+    environment:
+      POSTGRES_DB: kong
+      POSTGRES_USER: kong
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "kong"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # #######################################
+  # # Kong database migration
+  # #######################################
+  kong-migration:
+    image: kong:2.0.4
+    # platform: 'linux/amd64'
+    command: "kong migrations bootstrap"
+    restart: on-failure
+    networks:
+      - dino-net
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: password
+    depends_on:
+      - kong-database
+
+  # #######################################
+  # # Kong: The API Gateway
+  # #######################################
+  kong:
+    image: kong:2.0.4
+    # platform: 'linux/amd64'
+    restart: always
+    networks:
+      - dino-net
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: password
+      KONG_PROXY_LISTEN: 0.0.0.0:8000
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+    depends_on:
+      - kong-migration
+    ports:
+      - "8000:8000"
+  
+  # #######################################
+  # # Konga: Kong GUI
+  # #######################################
+  konga:
+    image: pantsel/konga
+    # platform: 'linux/amd64'
+    restart: always
+    networks:
+        - dino-net
+    environment:
+      DB_ADAPTER: postgres
+      DB_HOST: kong-database
+      DB_USER: kong
+      DB_PASSWORD: password
+      DB_DATABASE: konga_db
+    depends_on:
+      - kong
+    ports:
+      - "1337:1337"
+    volumes:
+      - kongadata:/app/kongadata

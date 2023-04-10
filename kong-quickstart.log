@@ -1,0 +1,259 @@
+>main 
+>docker_pull_images
+9.6: Pulling from library/postgres
+1cb79db8a9e7: Pulling fs layer
+f6bae7873dd7: Pulling fs layer
+8f7722dc50a7: Pulling fs layer
+e8622b8cb6f3: Pulling fs layer
+d6d74bba3a57: Pulling fs layer
+874d4d2a09fd: Pulling fs layer
+2d87c3a4038c: Pulling fs layer
+f955a6cf127b: Pulling fs layer
+f62dc55c568d: Pulling fs layer
+4e2c4902efbd: Pulling fs layer
+01c676df543a: Pulling fs layer
+1e3d335ef0b7: Pulling fs layer
+11087f2b0d87: Pulling fs layer
+4b9a74ac6ea0: Pulling fs layer
+874d4d2a09fd: Waiting
+2d87c3a4038c: Waiting
+f955a6cf127b: Waiting
+11087f2b0d87: Waiting
+4b9a74ac6ea0: Waiting
+01c676df543a: Waiting
+4e2c4902efbd: Waiting
+1e3d335ef0b7: Waiting
+e8622b8cb6f3: Waiting
+d6d74bba3a57: Waiting
+8f7722dc50a7: Verifying Checksum
+8f7722dc50a7: Download complete
+f6bae7873dd7: Verifying Checksum
+f6bae7873dd7: Download complete
+1cb79db8a9e7: Verifying Checksum
+1cb79db8a9e7: Download complete
+e8622b8cb6f3: Verifying Checksum
+e8622b8cb6f3: Download complete
+d6d74bba3a57: Verifying Checksum
+d6d74bba3a57: Download complete
+2d87c3a4038c: Verifying Checksum
+2d87c3a4038c: Download complete
+f955a6cf127b: Verifying Checksum
+f955a6cf127b: Download complete
+1cb79db8a9e7: Pull complete
+f6bae7873dd7: Pull complete
+874d4d2a09fd: Download complete
+8f7722dc50a7: Pull complete
+e8622b8cb6f3: Pull complete
+d6d74bba3a57: Pull complete
+874d4d2a09fd: Pull complete
+2d87c3a4038c: Pull complete
+f955a6cf127b: Pull complete
+01c676df543a: Verifying Checksum
+01c676df543a: Download complete
+4e2c4902efbd: Verifying Checksum
+4e2c4902efbd: Download complete
+f62dc55c568d: Verifying Checksum
+f62dc55c568d: Download complete
+11087f2b0d87: Verifying Checksum
+11087f2b0d87: Download complete
+4b9a74ac6ea0: Verifying Checksum
+4b9a74ac6ea0: Download complete
+1e3d335ef0b7: Verifying Checksum
+1e3d335ef0b7: Download complete
+f62dc55c568d: Pull complete
+4e2c4902efbd: Pull complete
+01c676df543a: Pull complete
+1e3d335ef0b7: Pull complete
+11087f2b0d87: Pull complete
+4b9a74ac6ea0: Pull complete
+Digest: sha256:caddd35b05cdd56c614ab1f674e63be778e0abdf54e71a7507ff3e28d4902698
+Status: Downloaded newer image for postgres:9.6
+docker.io/library/postgres:9.6
+3.2.2.0: Pulling from kong/kong-gateway
+76769433fd8a: Pulling fs layer
+582a44f4cf76: Pulling fs layer
+d31b8ddaf19e: Pulling fs layer
+cf2f1491d6b1: Pulling fs layer
+cf2f1491d6b1: Waiting
+76769433fd8a: Verifying Checksum
+76769433fd8a: Download complete
+76769433fd8a: Pull complete
+cf2f1491d6b1: Verifying Checksum
+cf2f1491d6b1: Download complete
+582a44f4cf76: Verifying Checksum
+582a44f4cf76: Download complete
+582a44f4cf76: Pull complete
+d31b8ddaf19e: Verifying Checksum
+d31b8ddaf19e: Download complete
+d31b8ddaf19e: Pull complete
+cf2f1491d6b1: Pull complete
+Digest: sha256:d989facec4a3745d426e429b0e7fedbf210bedc1e1c49d14d5b846b109d21725
+Status: Downloaded newer image for kong/kong-gateway:3.2.2.0
+docker.io/kong/kong-gateway:3.2.2.0
+<docker_pull_images
+>destroy_kong
+Error: No such container: kong-quickstart-gateway
+Error: No such container: kong-quickstart-database
+Error: No such network: kong-quickstart-net
+<destroy_kong
+>init
+eca60b1a3f0c4be7669a9be69335b6ad7b84b950dde2380c44827cc98a80eb35
+<init
+>db
+cb9f34156918631d56b9443e583629f22bfd43491cc206ae4237333793c388d0
+>wait_for_db
+/var/run/postgresql:5432 - no response
+/var/run/postgresql:5432 - no response
+/var/run/postgresql:5432 - accepting connections
+<wait_for_db
+>init_db
+Bootstrapping database...
+migrating core on database 'kong'...
+core migrated up to: 000_base (executed)
+core migrated up to: 003_100_to_110 (executed)
+core migrated up to: 004_110_to_120 (executed)
+core migrated up to: 005_120_to_130 (executed)
+core migrated up to: 006_130_to_140 (executed)
+core migrated up to: 007_140_to_150 (executed)
+core migrated up to: 008_150_to_200 (executed)
+core migrated up to: 009_200_to_210 (executed)
+core migrated up to: 010_210_to_211 (executed)
+core migrated up to: 011_212_to_213 (executed)
+core migrated up to: 012_213_to_220 (executed)
+core migrated up to: 013_220_to_230 (executed)
+core migrated up to: 014_230_to_260 (executed)
+core migrated up to: 015_260_to_270 (executed)
+core migrated up to: 016_270_to_280 (executed)
+core migrated up to: 016_280_to_300 (executed)
+core migrated up to: 017_300_to_310 (executed)
+core migrated up to: 018_310_to_320 (executed)
+migrating acl on database 'kong'...
+acl migrated up to: 000_base_acl (executed)
+acl migrated up to: 002_130_to_140 (executed)
+acl migrated up to: 003_200_to_210 (executed)
+acl migrated up to: 004_212_to_213 (executed)
+migrating acme on database 'kong'...
+acme migrated up to: 000_base_acme (executed)
+acme migrated up to: 001_280_to_300 (executed)
+migrating basic-auth on database 'kong'...
+basic-auth migrated up to: 000_base_basic_auth (executed)
+basic-auth migrated up to: 002_130_to_140 (executed)
+basic-auth migrated up to: 003_200_to_210 (executed)
+migrating bot-detection on database 'kong'...
+bot-detection migrated up to: 001_200_to_210 (executed)
+migrating canary on database 'kong'...
+canary migrated up to: 001_200_to_210 (executed)
+migrating degraphql on database 'kong'...
+degraphql migrated up to: 000_base (executed)
+migrating graphql-rate-limiting-advanced on database 'kong'...
+graphql-rate-limiting-advanced migrated up to: 000_base_gql_rate_limiting (executed)
+migrating hmac-auth on database 'kong'...
+hmac-auth migrated up to: 000_base_hmac_auth (executed)
+hmac-auth migrated up to: 002_130_to_140 (executed)
+hmac-auth migrated up to: 003_200_to_210 (executed)
+migrating http-log on database 'kong'...
+http-log migrated up to: 001_280_to_300 (executed)
+migrating ip-restriction on database 'kong'...
+ip-restriction migrated up to: 001_200_to_210 (executed)
+migrating jwt on database 'kong'...
+jwt migrated up to: 000_base_jwt (executed)
+jwt migrated up to: 002_130_to_140 (executed)
+jwt migrated up to: 003_200_to_210 (executed)
+migrating jwt-signer on database 'kong'...
+jwt-signer migrated up to: 000_base_jwt_signer (executed)
+jwt-signer migrated up to: 001_200_to_210 (executed)
+migrating key-auth on database 'kong'...
+key-auth migrated up to: 000_base_key_auth (executed)
+key-auth migrated up to: 002_130_to_140 (executed)
+key-auth migrated up to: 003_200_to_210 (executed)
+migrating key-auth-enc on database 'kong'...
+key-auth-enc migrated up to: 000_base_key_auth_enc (executed)
+key-auth-enc migrated up to: 001_200_to_210 (executed)
+migrating konnect-application-auth on database 'kong'...
+konnect-application-auth migrated up to: 000_base_konnect_applications (executed)
+migrating mtls-auth on database 'kong'...
+mtls-auth migrated up to: 000_base_mtls_auth (executed)
+mtls-auth migrated up to: 001_200_to_210 (executed)
+mtls-auth migrated up to: 002_2200_to_2300 (executed)
+migrating oauth2 on database 'kong'...
+oauth2 migrated up to: 000_base_oauth2 (executed)
+oauth2 migrated up to: 003_130_to_140 (executed)
+oauth2 migrated up to: 004_200_to_210 (executed)
+oauth2 migrated up to: 005_210_to_211 (executed)
+migrating openid-connect on database 'kong'...
+openid-connect migrated up to: 000_base_openid_connect (executed)
+openid-connect migrated up to: 001_14_to_15 (executed)
+openid-connect migrated up to: 002_200_to_210 (executed)
+openid-connect migrated up to: 003_280_to_300 (executed)
+migrating post-function on database 'kong'...
+post-function migrated up to: 001_280_to_300 (executed)
+migrating pre-function on database 'kong'...
+pre-function migrated up to: 001_280_to_300 (executed)
+migrating proxy-cache-advanced on database 'kong'...
+proxy-cache-advanced migrated up to: 001_035_to_050 (executed)
+migrating rate-limiting on database 'kong'...
+rate-limiting migrated up to: 000_base_rate_limiting (executed)
+rate-limiting migrated up to: 003_10_to_112 (executed)
+rate-limiting migrated up to: 004_200_to_210 (executed)
+migrating response-ratelimiting on database 'kong'...
+response-ratelimiting migrated up to: 000_base_response_rate_limiting (executed)
+migrating session on database 'kong'...
+session migrated up to: 000_base_session (executed)
+session migrated up to: 001_add_ttl_index (executed)
+migrating vault-auth on database 'kong'...
+vault-auth migrated up to: 000_base_vault_auth (executed)
+vault-auth migrated up to: 001_280_to_300 (executed)
+vault-auth migrated up to: 002_300_to_310 (executed)
+migrating enterprise on database 'kong'...
+enterprise migrated up to: 000_base (executed)
+enterprise migrated up to: 006_1301_to_1500 (executed)
+enterprise migrated up to: 006_1301_to_1302 (executed)
+enterprise migrated up to: 010_1500_to_2100 (executed)
+enterprise migrated up to: 007_1500_to_1504 (executed)
+enterprise migrated up to: 008_1504_to_1505 (executed)
+enterprise migrated up to: 007_1500_to_2100 (executed)
+enterprise migrated up to: 009_1506_to_1507 (executed)
+enterprise migrated up to: 009_2100_to_2200 (executed)
+enterprise migrated up to: 010_2200_to_2211 (executed)
+enterprise migrated up to: 010_2200_to_2300 (executed)
+enterprise migrated up to: 010_2200_to_2300_1 (executed)
+enterprise migrated up to: 011_2300_to_2600 (executed)
+enterprise migrated up to: 012_2600_to_2700 (executed)
+enterprise migrated up to: 012_2600_to_2700_1 (executed)
+enterprise migrated up to: 013_2700_to_2800 (executed)
+enterprise migrated up to: 014_2800_to_3000 (executed)
+enterprise migrated up to: 015_3000_to_3100 (executed)
+enterprise migrated up to: 016_3100_to_3200 (executed)
+migrating enterprise.acl on database 'kong'...
+enterprise.acl migrated up to: 001_1500_to_2100 (executed)
+migrating enterprise.basic-auth on database 'kong'...
+enterprise.basic-auth migrated up to: 001_1500_to_2100 (executed)
+migrating enterprise.hmac-auth on database 'kong'...
+enterprise.hmac-auth migrated up to: 001_1500_to_2100 (executed)
+migrating enterprise.jwt on database 'kong'...
+enterprise.jwt migrated up to: 001_1500_to_2100 (executed)
+migrating enterprise.key-auth on database 'kong'...
+enterprise.key-auth migrated up to: 001_1500_to_2100 (executed)
+migrating enterprise.key-auth-enc on database 'kong'...
+enterprise.key-auth-enc migrated up to: 001_1500_to_2100 (executed)
+enterprise.key-auth-enc migrated up to: 002_3100_to_3200 (executed)
+enterprise.key-auth-enc migrated up to: 002_2800_to_3200 (executed)
+migrating enterprise.mtls-auth on database 'kong'...
+enterprise.mtls-auth migrated up to: 001_1500_to_2100 (executed)
+enterprise.mtls-auth migrated up to: 002_2200_to_2300 (executed)
+migrating enterprise.oauth2 on database 'kong'...
+enterprise.oauth2 migrated up to: 001_1500_to_2100 (executed)
+enterprise.oauth2 migrated up to: 002_2200_to_2211 (executed)
+migrating enterprise.request-transformer-advanced on database 'kong'...
+enterprise.request-transformer-advanced migrated up to: 001_1500_to_2100 (executed)
+migrating enterprise.response-transformer-advanced on database 'kong'...
+enterprise.response-transformer-advanced migrated up to: 001_1500_to_2100 (executed)
+103 migrations processed
+103 executed
+Database is up-to-date
+<init_db
+<db
+>kong
+d96ced6b526b74af7abe3db143c9b40bd33aee4f9f729d622dcb44463b5759ec
+docker: Error response from daemon: driver failed programming external connectivity on endpoint kong-quickstart-gateway (8435a8707e5c24bdb8c481f99438f175daa1b6951b76f2b3b17d7d17e66a4aeb): Bind for 0.0.0.0:8001 failed: port is already allocated.
+<kong

@@ -1,0 +1,199 @@
+_format_version: "1.1"
+
+services:
+- name: get_all_users
+  host: user
+  protocol: http
+  port: 5003
+  path: "/user"
+  routes:
+  - name: get_all_users
+    paths:
+      - /user
+    protocols:
+      - http
+      - https
+- name: get_one_user
+  host: user
+  protocol: http
+  port: 5003
+  path: "/user"
+  routes:
+  - name: get_one_user
+    paths:
+      - /user
+    protocols:
+      - http
+      - https
+- name: create_user
+  host: user
+  protocol: http
+  port: 5003
+  path: "/user"
+  routes:
+  - name: create_user
+    paths:
+      - /user
+    protocols:
+      - http
+      - https
+- name: update_user
+  host: user
+  protocol: http
+  port: 5003
+  path: "/point"
+  routes:
+  - name: update_user
+    paths:
+      - /point
+    protocols:
+      - http
+      - https
+- name: delete_user
+  host: user
+  protocol: http
+  port: 5003
+  path: "/user"
+  routes:
+  - name: delete_user
+    paths:
+      - /user
+    protocols:
+      - http
+      - https
+- name: link_account
+  host: user
+  protocol: http
+  port: 5003
+  path: "/accounts"
+  routes:
+  - name: link_account
+    paths:
+      - /accounts
+    protocols:
+      - http
+      - https
+- name: get_available_vouchers
+  host: availablevoucher
+  protocol: http
+  port: 5001
+  path: "/availablevoucher"
+  routes:
+  - name: get_available_vouchers
+    paths:
+      - /availablevoucher
+    protocols:
+      - http
+      - https
+- name: get_user_vouchers
+  host: purchasedvoucher
+  protocol: http
+  port: 5002
+  path: "/purchasedvoucher"
+  routes:
+  - name: get_user_vouchers
+    paths:
+      - /purchasedvoucher
+    protocols:
+      - http
+      - https
+- name: redeem_user_vouchers
+  host: purchasedvoucher
+  protocol: http
+  port: 5002
+  path: "/purchasedvoucher"
+  routes:
+  - name: redeem_user_vouchers
+    paths:
+      - /purchasedvoucher
+    protocols:
+      - http
+      - https
+- name: purchase_user_vouchers
+  host: purchasedvoucher
+  protocol: http
+  port: 5002
+  path: "/purchasedvoucher"
+  routes:
+  - name: purchase_user_vouchers
+    paths:
+      - /purchasedvoucher
+    protocols:
+      - http
+      - https
+- name: points_accumulation
+  host: points_accumulation
+  protocol: http
+  port: 6003
+  path: "/add_points"
+  routes:
+  - name: points_accumulation
+    paths:
+      - /add_points
+    protocols:
+      - http
+      - https
+- name: validate_vouchers
+  host: validatevoucher
+  protocol: http
+  port: 6001
+  path: "/validate_voucher"
+  routes:
+  - name: validate_vouchers
+    paths:
+      - /validate_voucher
+    protocols:
+      - http
+      - https
+- name: buy_voucher
+  host: buyvoucher
+  protocol: http
+  port: 6002
+  path: "/buy_voucher"
+  routes:
+  - name: buy_voucher
+    paths:
+      - /buy_voucher
+    protocols:
+      - http
+      - https
+- name: redeem
+  host: redeemvoucher
+  protocol: http
+  port: 5010
+  path: "/redeem_voucher"
+  routes:
+  - name: redeem
+    paths:
+      - /redeem_voucher
+    protocols:
+      - http
+      - https
+
+plugins:
+- name: cors
+  config: 
+    origins:
+    - "*"
+    methods:
+    - HEAD
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+    headers:
+    - Access-Control-Allow-Origin
+    - Accept
+    - Accept-Version
+    - Content-Length
+    - Content-MD5
+    - Content-Type
+    - Date
+    - X-Auth-Token
+    exposed_headers:
+    - X-Auth-Token
+    credentials: true
+    max_age: 3600
+    preflight_continue: false
+
